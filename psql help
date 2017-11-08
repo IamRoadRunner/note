@@ -1,0 +1,32 @@
+
+psql -U dbuser -d dbname -h [ip] -p [port] 登录
+
+简写形式 （系统用户名，数据库用户名，数据库名都是postgres）
+sudo -u postgres psql 进入
+\password
+\p
+\h help
+\l 列出所有数据库
+\c [database_name]链接其他数据库
+\d 列出数据库表格
+\d [table_name]列出表格结构
+\du 列出所有用户
+\conninfo 列出数据库和链接信息
+
+创建用户，新建数据库，赋予权限
+create user [username] with password '';
+create database [dbname] owner [username];
+grant all privileges on database [dbname] to [username];
+修改密码
+alter user postgres with password 'xx' 修改密码
+sudo -u postgres psql -d postgres 删除密码
+
+9.5/main/postgresql.conf
+listen_addresses = '*' 
+9.5/main/pg_hba.conf
+添加 host all all 0.0.0.0  0.0.0.0 md5
+远程链接 
+
+sudo postgresql restart
+
+

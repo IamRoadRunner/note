@@ -1,0 +1,58 @@
+TemplateResponse,SimpleTemplateResponse
+
+from django.template.response import TemplateResponse
+t = TemplateResponse(request,'order.html',{})
+t.render()
+print(t.content)
+t.template_name='new.html'
+t.render()
+print(t.content)
+
+文件上传
+文件上传的时候数据被保存在reque.FILES
+
+基本的文件上传
+
+from django import forms
+class UploadFileForm(forms.Form):
+	title = forms.CharField(max_length=50)
+	file = forms.FileField()
+request.FILES['file']存放数据
+FILES是一个字典保罗每个FileField的键
+要求:POST,<form>中有 enctype='multipart/form-data'属性
+
+def upload_file(request):
+	if request.method == 'POST':
+		form = ModelFormWithFileField(request.POST,request.FILES)
+		if form.is_valid():
+			form.save()
+			return HttpResponseRedirect('/xx/xx/')
+	else:
+		form = ModelFormWithFileField()
+	return render(request,'',{})
+
+File对象包含了一些用于给予文件处理的內建类
+
+File类
+	name/含有MEDIA_ROOT相对路径的文件名称
+	size/文件的字节数
+	mode/文件的读写模式
+	__iter__()迭代文件每次生成一行
+	chunks
+	multiplt_chunks
+	write(content)
+	close()
+
+ContentFile类
+继承自File,它操作字符串的内容,而不是一个实际的文件
+
+File.save(name,content())
+	car.photo.save('xxx.jpg',content,save=False)
+	car.save()
+
+	==
+	car.puoto.save('xxx.jpg',content,save=True)
+File.delete(save=)
+	save如果是True文件删除之后会调用save
+
+

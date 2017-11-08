@@ -1,0 +1,17 @@
+from collections import deque
+deque(maxlen=#)最长为#位
+
+import heapq
+heapq.nlargest(#,list)
+heapq.nsmallest(#,list)
+heapq.leftappend()
+
+from collections import Counter
+d=Counter(item) 是一个字典
+d.update(list2)可以两个counter相加减
+
+from operator import itemgetter
+row={'a':1}
+sorted(rows,key=itemgetter('key'))
+
+

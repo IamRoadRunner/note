@@ -1,0 +1,96 @@
+redis-cli 启动-h host -p port -a password
+1.type key value
+	del key
+	dump key
+	exists key
+	expire key
+	type key
+	move key db
+	rename key newkey
+	renamex key newkey
+2.字符串
+	set key value
+	mset key1 value1 key2 value2
+	get key
+	mget key1 key2..
+	getrange key 0 3
+	getset key newvalue	
+	strlen key
+	append key value追加到后边
+3.哈希
+	hset key field value
+	hmset key field1 value1 field2 value2
+	hdel key field1 field2
+	hmget key field1 field2
+	hget key field
+	hexists key field
+	hgetall key	
+	hkeys key
+	hvals key
+	hlen key
+4.列表
+	lpush/rpush key value1 value2
+	blpop/brpop key timeout
+	lpop/rpop key 
+	brpoplpush source destination timeout
+	rpoplpush source destination
+	lrange key start stop
+	lrem key count value移除列表元素
+	lset key index value
+	ltrim key start stop 修剪
+5.集合
+	sadd key member1 member2
+	scard key 集合成员数
+	smembers key 返回所有成员
+	sismember key member判断member是否是key中的成员
+	srem key member1 member2删除成员
+	smove source destination member
+	sdiff key1 key2
+	sdiffstore key1 key2
+	sinter/sinterstore
+	sunion/sunionstore
+6.事务
+	事务原子性，开始事务，命令入队，执行事务。
+	multi 开始一个事务
+	。
+	。
+	。
+	exec触发
+7.其他
+	select index 切换数据库
+	服务器命令
+	client kill
+	client list
+	client getname
+	config set parameter value 修改参数无需重启
+	dbsize 获取数据苦key的数量
+	flushall
+	flushdb
+	config get dir redis安装目录
+	save生成dump.rdb 文件
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	

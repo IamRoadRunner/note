@@ -1,0 +1,17 @@
+django 的设置
+基础:
+设置文件是一个python模块,
+	不要有语法错误,可以使用python的语法动态设置,可以从其他设置文件中导入
+django-admin runserver --settings=mysite.settings
+指定要用的settings文件
+
+创建自己的设置
+配置名称全部都是大写,不要使用一个已经存在的配置
+
+设置
+核心配置
+ABSOLUTE_URL_OVERRIDES??
+ADMINS=(('John','john@example.com'))
+ALLOWED_HOSTS django 可以提供的主机/域名的字符串列表.
+APPEND_SLASH  请求的url没有匹配到,将重定向到/结尾的url.
+

@@ -1,0 +1,59 @@
+
+
+git checkout -b dev==git branch dev + git checkout dev
+git merge dev 就dev合并到master分支上
+git branch -d dev 删除分支
+
+运程仓库默认名称为origin，克隆是本地master分支和远程master分支对应起来了
+
+
+git pull origin develop
+git remote 查看远程
+-v详细信息
+
+git checkout -b mybranchname
+git add filename
+git status
+git commit
+
+git checkout develop
+git merge --no-ff mybranchname 合并（会弹出填写提交信息的界面）
+
+git push origin  develop
+
+git log 查看日志版本号
+git reset 到哪个版本号
+git diff 文件名显示修改
+
+
+num 1
+num 2
+num 3
+
+合并1，2的提交记录
+使用git rebase -i 3
+		pick num 1
+其中一条修改为	squash num 2
+自动    进入commit 信息修改之后
+git push -f origin develop 强制上推
+
+
+git merge --squash a
+提示冲突，
+修改冲突，
+git add 冲突文件
+git commit 
+
+
+git commit --amend 修改上次提交的备注信息
+
+git remote add name address/添加新的仓库
+
+
+master > git merge --no-ff develop
+git push gitlab master
+
+删除分支
+git push origin --delete branchname
+
+

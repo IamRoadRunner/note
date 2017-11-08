@@ -1,0 +1,19 @@
+部署说明
+服务器地址：10.7.1.34
+用户名：root
+密码：onest,123
+
+项目目录：
+/var/www
+
+部署步骤：
+source aptm-env/bin/activate
+cd aptm
+supervisorctl
+> stop aptm (ctrl+c)
+git pull origin develop
+(密码：jac75lin)
+./manage.py collectstatic
+./manage.py migrate(如果需要)
+supervisorctl
+> start aptm
