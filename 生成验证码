@@ -1,0 +1,39 @@
+import random
+import string
+import base64
+from io import BytesIO
+from PIL import Image, ImageDraw, ImageFont, ImageFilter
+# 生成验证码
+def gene_code():
+    width, height = (100, 30)
+    bgcolor = tuple(random.sample(range(100, 255), 3))
+    fontcolor = (0, 0, 255)
+    image = Image.new('RGBA', (width, height), bgcolor)
+    font = '/usr/share/fonts/truetype/abyssinica/AbyssinicaSIL-R.ttf'
+    font = ImageFont.truetype(font=font, size=25)
+    draw = ImageDraw.Draw(image)
+    # 文本
+    source = list(string.ascii_lowercase + '1234567890')
+    text = ''.join(random.sample(source, 6))
+    # 干扰线
+    linecolor = (0,0,0)
+    for i in range(0, 4):
+        draw.line([(random.randint(0, width), random.randint(0, height)), (random.randint(
+            0, width), random.randint(0, height))], fill=linecolor)
+    # 干扰点
+    chance = min (100, max (0, 2))
+    for w in range (width):
+        for h in range (height):
+            tmp = random.randint (0, 100)
+            if tmp > 100 - chance:
+                draw.point ((w, h), fill=(0, 0, 0))
+    # 填充
+    font_width, font_height = font.getsize(text)
+    draw.text(((width - font_width) / 6, (height - font_height) / 6), text,
+              font=font, fill=fontcolor)
+    # 扭曲
+    image = image.transform((width + 20, height + 10),
+                            Image.AFFINE, (0.8, 0, 0, 0, 0.8, 0), Image.BILINEAR)
+    image = image.filter(ImageFilter.EDGE_ENHANCE_MORE)
+    return image
+

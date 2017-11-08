@@ -1,0 +1,19 @@
+
+ 1628  cd /var/lib/dpkg/
+ 1629  ls
+ 1630  sudo mv info/ info_old
+ 1631  ls
+ 1632  mkdir info
+ 1633  sudo mkdir info
+ 1634  sudo apt-get update
+ 1635  sudo apt-get -f install
+ 1636  sudo mv info/* info_old/
+ 1637  sudo rm -rf info/
+ 1638  sudo mv info_old info
+ 1639  ls
+ 1640  sudo apt-get --reinstall install `dpkg --get-selections | grep '[[:space:]]install' | cut -f1`
+ 1641  sudo apt-get -f install
+
+sudo dpkg -i name.deb
+sudo apt-get install -f
+
