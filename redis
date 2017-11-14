@@ -1,5 +1,6 @@
 redis-cli 启动-h host -p port -a password
 1.type key value
+	key * (查看所有的key)
 	del key
 	dump key
 	exists key
