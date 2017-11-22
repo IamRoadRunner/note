@@ -1,10 +1,12 @@
 redis-cli 启动-h host -p port -a password
 1.type key value
-	key * (查看所有的key)
+	keys * (查看所有的key)
 	del key
 	dump key
 	exists key
 	expire key
+	persist key 去掉过期时间,可以持久化
+	ttl key 剩余时间
 	type key
 	move key db
 	rename key newkey
@@ -30,15 +32,17 @@ redis-cli 启动-h host -p port -a password
 	hvals key
 	hlen key
 4.列表
+	l..r
 	lpush/rpush key value1 value2
-	blpop/brpop key timeout
+	blpop/brpop key timeout过期时间
 	lpop/rpop key 
 	brpoplpush source destination timeout
 	rpoplpush source destination
 	lrange key start stop
-	lrem key count value移除列表元素
+	lrem key count(几个) value)移除列表元素
 	lset key index value
 	ltrim key start stop 修剪
+	llen key 列表长度
 5.集合
 	sadd key member1 member2
 	scard key 集合成员数
