@@ -1,0 +1,16 @@
+安装virtualenv
+-p指定python版本
+--no-site-packages:不适用系统的包
+--system-site-packages:可以访问系统包
+--distribute :copy一个python环境分支
+
+windows
+	virtualenv envname
+	cd envname
+	Script \activate
+
+linux
+	virtualenv envname
+	cd envname
+	source ./bin/activate
+	退出使用deactivate
