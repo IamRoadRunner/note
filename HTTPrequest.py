@@ -27,7 +27,7 @@ def fun(request,arg='xxx')
 在根urlconf里设置错误处理
 
 
-from django.conf.usrls import url,include
+from django.conf.urls import url,include
 
 url(r'^community/',include('django_website.app_name.urls'))
 #当遇到include时 把匹配到的部分去掉，将剩余的部分传给include里边的urlconf
