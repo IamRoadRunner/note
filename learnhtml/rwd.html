@@ -1,0 +1,67 @@
+<html>
+<meta charset="utf-8">
+<head>
+    <title>rwd</title>
+    <link rel="stylesheet" type="text/css" href="learn.css">
+    <style>
+        .city{
+            float:left;
+            margin:5px;
+            padding: 15px;
+            width: 300px;
+            height: 300px;
+            border: 1px solid black;
+        }
+    </style>
+</head>
+<body>
+<h1>响应式设计</h1>
+<h2>网页</h2>
+<br/>
+<div class="city">
+    <h2>first</h2>
+</div>
+<div class="city">
+    <h2>second</h2>
+</div>
+<div class="city">
+    <h2>thired</h2>
+</div>
+<iframe src="learn.html" name="diyi"></iframe>
+<p><a href="http://www.baidu.com" target="diyi">点击</a></p>
+<div>
+    <form action="http://www.baicu.com" method="post">
+        first name:<br/>
+        <input type="text" name="name" value="wang" size="10" maxlength="10">
+        <input type="text" name="firstname" value="wang" readonly>
+        <input type="text" name="testname" value="wang" disabled>
+        <br/>
+        last name:<br/>
+        <input type="date" name="lastname">
+        <br/>
+        <input type="radio" name="sex" value="mail" checked>male
+        <br/>
+        <input type="radio" name="sex" value="femail">female
+        <br/>
+        <input type="submit" value="提交">
+    </form>
+</div>
+<div>
+    <form>
+        <select name="cars">
+            <option value="1">1</option>
+            <option value="2" selected>2</option>
+            <option value="3">3</option>
+        </select>
+        <textarea name="message" rows="10" cols="5">
+            xxxxxxxxxxxxxxxxxxxxx
+        </textarea>
+        <button type="button" onclick="alert('xxxx')">点击</button>
+        <input type="color" name="favcolor">
+        <input type="range" name="points" min="0" max="10">
+        <input tyep="month" name="month">
+    </form>
+    <label>xxxxx</label>
+</div>
+</body>
+</html>
