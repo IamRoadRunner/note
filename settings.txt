@@ -14,4 +14,4 @@ ABSOLUTE_URL_OVERRIDES??
 ADMINS=(('John','john@example.com'))
 ALLOWED_HOSTS django 可以提供的主机/域名的字符串列表.
 APPEND_SLASH  请求的url没有匹配到,将重定向到/结尾的url.
-
+待续...

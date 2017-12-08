@@ -74,7 +74,7 @@ redis-cli 启动-h host -p port -a password
 	config get dir redis安装目录
 	save生成dump.rdb 文件
 
-
+service redis start/restart
 
 
 

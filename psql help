@@ -27,6 +27,6 @@ listen_addresses = '*'
 添加 host all all 0.0.0.0  0.0.0.0 md5
 远程链接 
 
-sudo postgresql restart
+sudo service postgresql restart
 
 

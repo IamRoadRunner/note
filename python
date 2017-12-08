@@ -13,5 +13,6 @@ d.update(list2)可以两个counter相加减
 from operator import itemgetter
 row={'a':1}
 sorted(rows,key=itemgetter('key'))
+待续...
 
 

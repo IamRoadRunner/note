@@ -19,7 +19,7 @@ int main(void)
 		printf("enter age:");
 		scanf("%d",&phorse[count]->age);
 		printf("enter name:");
-		scanf("%s", phorse[count]->name);
+		scanf("%s", &phorse[count]->name);
 		printf("enter day:");
 		scanf("%d", &phorse[count]->bob.day);	
 	}
