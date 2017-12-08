@@ -1,3 +1,4 @@
+#ifndef _Stack_h
 struct Node;
 typedef struct Node *ptrtonode;
 typedef ptrtonode stack;
@@ -9,6 +10,7 @@ void MakeEmpty(stack s);
 void Push (int x, stack s);
 int Top(stack s);
 void Pop(stack s);
+#endif
 
 struct Node
 {
