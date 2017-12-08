@@ -1,4 +1,5 @@
 #include<stdio.h>
+#include<stdlib.h>
 #include "zhan.h"
 
 int main(void)
@@ -29,7 +30,7 @@ void MakeEmpty(stack s)
 			Pop(s);
 }
 
-void Push (ElementType x, stack s)
+void Push (int x, stack s)
 {
 	ptrtonode tmpcell;
 	tmpcell = malloc(sizeof(struct Node));
@@ -40,5 +41,26 @@ void Push (ElementType x, stack s)
 		tmpcell->Element = x;
 		tmpcell->Next=s->Next;
 		s->Next=tmpcell;
+	}
+}
+
+int Top(stack s)
+{
+	if(!IsEmpty(s))
+		return s->Next->Element;
+	Error("Empty stack");
+	return 0;
+}
+
+void Pop(stack s)
+{
+	ptrtonode firstcell;
+	if (IsEmpty(s))
+		Error("Empty stack");
+	else
+	{
+		firstcell = s->Next;
+		s->Next = s->Next->Next;
+		free(firstcell);
 	}
 }
