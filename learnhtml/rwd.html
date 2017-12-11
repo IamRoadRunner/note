@@ -8,7 +8,7 @@
             float:left;
             margin:5px;
             padding: 15px;
-            width: 300px;
+            width: 500px;
             height: 300px;
             border: 1px solid black;
         }
@@ -30,14 +30,16 @@
 <iframe src="learn.html" name="diyi"></iframe>
 <p><a href="http://www.baidu.com" target="diyi">点击</a></p>
 <div>
-    <form action="http://www.baicu.com" method="post">
+    <form action="http://www.baidu.com" method="post">
         first name:<br/>
         <input type="text" name="name" value="wang" size="10" maxlength="10">
         <input type="text" name="firstname" value="wang" readonly>
         <input type="text" name="testname" value="wang" disabled>
         <br/>
         last name:<br/>
-        <input type="date" name="lastname">
+	<input type="text" name="lastname" size="10" maxlength="10"><br/>
+	时间
+        <input type="date" name="time">
         <br/>
         <input type="radio" name="sex" value="mail" checked>male
         <br/>
@@ -57,9 +59,10 @@
             xxxxxxxxxxxxxxxxxxxxx
         </textarea>
         <button type="button" onclick="alert('xxxx')">点击</button>
+	<button type="button" onclick="alert('content')">按钮名称</button>
         <input type="color" name="favcolor">
         <input type="range" name="points" min="0" max="10">
-        <input tyep="month" name="month">
+        <input type="month" name="month">
     </form>
     <label>xxxxx</label>
 </div>
