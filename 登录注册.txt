@@ -66,3 +66,45 @@ urlpatterns = [
     url(r'^login/', LoginView.as_view(), name='mc_login'),
     url(r'^register/',RegisterView.as_view(),name='mc_register')
 ]
+
+class CustomerLoginView(View):
+    '''
+    顾客登录
+    '''
+
+    def post(self, request):
+        now = datetime.now()
+        if not request.POST.get('agreement'):
+            return JsonResponse({'response_state': 400, 'msg': '请同意协议之后再登录!'})
+        eventid = request.POST.get('id')
+        event = Event.get_dict (eventid)
+        if not event['is_pub']:
+            return JsonResponse ({'response_state': 400, 'msg': '活动还未发布'})
+        if 'expire_date' in event:
+            if now >= utils.toDate (event['expire_date']):
+                return JsonResponse ({'response_state': 400, 'msg': '活动已结束!'})
+        if now >= utils.toDate (event['event_end']):
+            return JsonResponse ({'response_state': 400, 'msg': '活动已结束!'})
+        try:
+            customer = Customer.objects.get(
+                mobile=request.POST.get('tel'),
+                identication=request.POST.get('personId'), event_id=eventid)
+        except BaseException:
+            return JsonResponse(
+                {'response_state': 400, 'msg': '手机号或证件号不正确'})
+        try:
+            customer.user                                                           #customer没有user的时候
+        except BaseException:
+            return JsonResponse(
+                {'response_state': 400, 'msg': '账号出现异常，请联系售楼人员'})
+        session_key = customer.session_key
+        if request.session.session_key:                                             #用户如果没有登录是没有session_key的,如果有表示已经登录或没有正常退出,需要先退出.
+            logout(request)
+        if session_key:                                                             
+            Session.objects.filter(pk=session_key).delete()                         #删除之前的session信息,防止session表过大
+        login(request, customer.user)
+        if not customer.protime:
+            customer.protime = now
+        customer.session_key = request.session.session_key
+        customer.save()
+        return JsonResponse({'response_state': 200})
