@@ -15,14 +15,85 @@
     </style>
 </head>
 <body>
-<h1>响应式设计</h1>
-<h2>网页</h2>
+<script>
+    for (i=0;i<10;i++)
+    {
+        if(i==3) break;
+            //跳出循环;
+        x=i;
+    }
+    for (i=0;i<10;i++)
+    {
+        if(i==3) continue;
+            //跳过这一步循环;
+        x=i;
+    }
+    function err() {
+        try
+        {
+            if(x=="") throw "empty";
+            //自定义错误
+        }
+        catch (whatmistake)
+        {
+            //操作;
+        }
+    }
+    var cars=["audi","bmw","volvo"];
+    function Fun2() {
+        document.getElementById("fun2").innerHTML=cars[0].toUpperCase()+cars[0].length;
+    }
+    function Fun3(name,num) {
+        alert(name,num);
+    }
+    function Fun4() {
+        var time = new Date().getHours();
+        if (time < 10) {
+            x = "good day";
+        }
+        else {
+            x = "bad day";
+        }
+        document.getElementById("fun4").innerHTML = x;
+    }
+    function changetext(id) {
+        id.innerHTML='第二';
+    }
+</script>
+
+<div>
+    <button type="button" onclick="Fun3('王'+'1')">弹窗</button>
+    <button type="button" onclick="Fun4()">时间比较</button>
+    <p id="fun4"></p>
+</div>
+
+<div id="firstdiv">
+<h1 id="fun">响应式设计</h1>
+    <button type="button" onclick="document.getElementById('fun').style.color='red'">
+    点击</button>
+</div>
+
+<script>
+    var x=document.getElementById("fun");
+    document.write(x.innerHTML+"<br/>");
+    var z=document.getElementById("firstdiv");
+    var y=z.getElementsByTagName("h1");
+    document.write(y[0].innerHTML);
+</script>
+
+<h2 id="fun2">网页</h2>
+<!--<script>-->
+    <!--document.getElementById("fun2").innerHTML="新的内容";-->
+<!--</script>-->
+<button type="button" onclick="Fun2()">
+    点击
+</button>
 <br/>
 <div class="city">
-    <h2>first</h2>
+    <h2 onclick="this.innerHTML='第一'">first</h2>
 </div>
 <div class="city">
-    <h2>second</h2>
+    <h2 onclick="changetext(this)">second</h2>
 </div>
 <div class="city">
     <h2>thired</h2>

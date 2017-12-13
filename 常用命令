@@ -1,0 +1,39 @@
+ssh-keygen -t -r
+ssh-copy-id ip
+scp /d ip:/d
+
+ctrl+z 暂停
+bg后台运行
+fg前台运行
+
+iptables -t -I/A -s-d --sport --dport -j
+INPUT OUTPUT FORWARD 
+
+ACCEPT
+LOG
+REJECT
+DROP
+
+netstat -l/a -t/u -n -c/更新 -p/应用
+ss
+
+service redis start
+=>systemctl start redis.service
+
+lscpu free dg 
+top x b y >< 1
+
+mount s d 
+/etc/fstab  s d 权限 上电自检 优先级
+
+crontab -e -u
+-l-u
+
+visudo 
+/etc/sudoer
+wang all=(root) all
+
+
+tar -vzcf 压缩
+    -vzxf 解压
+chmod chgrp +s +t/

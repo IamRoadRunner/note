@@ -1,0 +1,14 @@
+查找HTML元素
+    通过id查找HTML元素
+        var x=document.getElementById("id");
+    通过标签名查找
+        var x=getElementByTagName("p");
+        x[index]
+改变HTML输出流
+    document.write();直接向HTML输出流写内容;
+改变HTML内容
+    document.getElementById(id).innerHTML=new HTML;
+改变HTML的属性
+    document.getElementById(id).attribute(name)=new value;
+改变HTML的样式
+    document.getElementById(id).style.color="blue";

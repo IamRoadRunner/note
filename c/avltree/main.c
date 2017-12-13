@@ -47,9 +47,9 @@ avltree Insert(int x,avltree t)
 			t->right=Insert(x,t->right);
 			if(Height(t->right)-Height(t->right)==2)
 				if(x<t->right->element)
-					t=SingleRotateWithright(t);
+					t=SingleRotateWithRight(t);
 				else
-					t=DoubleRotateWithright(t);
+					t=DoubleRotateWithRight(t);
 		}
 	t->height=Max(Height(t->left),Height(t->right))+1;
 	return t;
