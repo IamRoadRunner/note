@@ -12,3 +12,24 @@
     document.getElementById(id).attribute(name)=new value;
 改变HTML的样式
     document.getElementById(id).style.color="blue";
+
+创建一个对象
+1   p=new Object();
+    p.x="xx";
+2   p={x:"xx"};
+3   使用函数
+    function f(a)
+    {
+    this.x=a
+    this.otherf=otherf;
+    function otherf(b)
+    {
+    this.x=b;//修改属性x的值;
+    }
+    }
+    p=new f("xx");
+    p.otherf("xxx")
+with(people)
+{
+var str=name//相当于people.name
+}

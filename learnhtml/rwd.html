@@ -59,6 +59,12 @@
     function changetext(id) {
         id.innerHTML='第二';
     }
+    function over(id) {
+       id.innerHTML="over"
+    }
+    function out (id) {
+        id.innerHTML="out"
+    }
 </script>
 
 <div>
@@ -137,5 +143,18 @@
     </form>
     <label>xxxxx</label>
 </div>
+<div onmouseover="over(this)" onmouseout="out(this)" style="background-color:green;width:120px;height:20px;padding:40px;color:#ffffff;">
+鼠标事件
+</div>
+<div id="charubiaoqian">
+    <p>插入标签</p>
+</div>
+<script>
+    var ins=document.getElementById("charubiaoqian");
+    var la=document.createElement("p");
+    var con=document.createTextNode("这是插入的内容");
+    la.appendChild(con);
+    ins.appendChild(la);
+</script>
 </body>
 </html>
