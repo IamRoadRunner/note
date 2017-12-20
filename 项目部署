@@ -34,3 +34,16 @@ git pull origin develop
 ./manage.py migrate(如果需要)
 supervisorctl
 > start aptm
+
+nginx
+下载包，需要的模块
+解压之后cd进去, .configure --prefix[以前的额目录] --add-module xxx --add-module yyy
+如果之前安装过就把 objs/nginx 复制到原来的目录sbin/ 
+可以-c指定配置文件
+
+修改conf/nginx.conf 
+{
+	使用limit_req_zone,limit_conn_zone限制连接数，并发数
+	$args,$remote_addr,
+	if (这里可以使用正则匹配来做条件)==，!=,~*,!~*
+}
