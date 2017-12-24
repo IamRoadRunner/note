@@ -1,0 +1,45 @@
+nginx 服务的基本配置
+运行时至少必须加载几个核心模块和一个时间类模块。
+1，用于调试，定位问题的配置项。
+	1)deamon on|off 是否以守护进程方式运行nginx，脱离终端，后台运行。
+	2)master_process on|off 是否以master/worker方式工作。
+	3)error_log /path/file level error日志，/dev/null 关闭
+	日志级别，debug<info<notice<warn<error<crit<alert<emerg,规定级别之后，大于等于它的日志会输出。
+	4)debug_points[stop|abort]是否处理几个特殊的调试点。
+	5)debut_connection[ip|cidr]，configure 的时候加入了--with-debug参数，仅对客户端输出debug级别的日志。其它的仍按着error_log的配置。
+	放在events{}中才有效。
+	6)worker_rlimit_core size 限制coredump核心转储文件的大小。
+	7)working_directory path 指定coredump文件生成目录。
+2，正常运行的必备配置项。
+	1)定义环境变量，env VAR|VAR=VALUE,可以直接设置操作系统上的环境变量。
+	2)嵌入其它配置文件 include /path/fle。
+	3)pid文件的路径。pid path/file,默认pid logs/nginx.pid;保存master进程id的pid文件路径。默认与configure --pid-path相同。
+	4)worker进程运行的用户及用户组。user username [groupname]
+	5)指定worker进程可以打开的最大句柄描述符个数。worker_rlimit_nofile limit;
+	6)限制信号队列，worker_rlimit_sigpending limit,设置每个用户发往nginx的信号队列的大小。
+3，优化性能的配置项。
+	1)worker进程个数，worker_processes number;
+	2)worker和指定cpu绑定，worker_cpu_affinity cpumask;减少对cpu抢占的时间浪费。
+	3)ssl硬件加速，ssl_engin device;加快ssl协议处理速度，使用openssl engine -t 查看是否有ssl硬件加速设备。
+	4) 系统调用gettimeofday(内核事件调用返回时会执行，实现用内核的时钟来更新nginx缓存时钟)的执行频率，timer_resolution t
+	5)worker进程优先级设置，worker_priority nice
+4，事件类配置项。
+	1)是否打开accept锁，accept_mutex[on|off],它是负载均衡锁，默认打开。可以让多个worker进程轮流地，序列化地与新的客户端建立tcp连接。
+	2)lock文件的路径 lock_file path/file;默认lock_file logs/nginx.lock;当nginx不知其原子锁的时候使用文件锁实现accept锁。
+	3)使用accept锁后到真正建立连接之间的延迟时间。accept_mutex_delay num;
+	4)批量建立新连接，multi_accept[on|off]尽可能对本次调度中客户端发起的所有tcp请求建立连接。
+	5)选择事件模型use[kqueue,epoll,dev/poll,select......]
+	6)每个worker的最大连接数，worker_connections number;每个worker进程同时处理的最大连接数。
+
+虚拟主机与请求的分发
+	每一个server块就是一个虚拟主机，只处理与之相对应的主机域名请求。区别不同主机域名的http请求
+	1)监听端口，listen port默认80/ip/hostname
+	listen可用参数的意义：
+		default：将所在的server块作为整个web服务的默认server块。请求无法匹配到主机域名的时候会选用默认的虚拟主机。
+		backlog=num：表示tcp中backlog队列的大小，默认-1，
+		ssl：在当前监听的端口上建立的连接必须基于ssl协议。
+		bind：绑定当前端口/地址对，同时对一个端口监听多个地址时才生效。
+	2)主机名称
+		server_name name,后边可以跟多个主机名称，
+		请求的匹配规则
+			所有字符串完全匹配，通配符+字符串，字符串+通配符，正则表达式匹配的。
