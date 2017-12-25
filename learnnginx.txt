@@ -43,3 +43,26 @@ nginx 服务的基本配置
 		server_name name,后边可以跟多个主机名称，
 		请求的匹配规则
 			所有字符串完全匹配，通配符+字符串，字符串+通配符，正则表达式匹配的。
+	3)location
+		书写匹配规则，=，~，~*，^~,这里表达“如果不匹配。。则。。”不容易，那就把情况列出来。
+
+文件路径的定义
+	1)root path
+		location /d/ {root /var/www/html/;}，请求/d/e,会返回/var/www/html/d/e的内容。
+	2）alias path  (location中)
+		location /c {alias /usr/local/nginx/c/;},请求/c/n,
+	3)访问首页，index file;
+		location / {
+		rot path;
+		index /index.html /html/index.html /index.html;
+		}
+		path/index.html,path/html/index.html...
+	4)根据http返回码重定向页面
+		error_page code1/code2/code3 /页面/http://xxx/@fetch;
+		error_page code1=code2 /xxx 修改返回的错误码;
+		error_page code=/xxx 根据返回的结果决定错误码.
+
+		location/{error_page 404 @fallback;}
+		location @fallback {xxxx}
+
+		
