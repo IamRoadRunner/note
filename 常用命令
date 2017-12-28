@@ -1,6 +1,6 @@
 ssh-keygen -t -r
 ssh-copy-id ip
-scp /d ip:/d
+scp /d(源) ip:/d(目的地)
 
 ctrl+z 暂停
 bg后台运行
