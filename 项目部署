@@ -17,6 +17,14 @@ linux
 
 克隆项目，切换分支，在虚拟环境中pip install -i requirement.txt安装模块。
 supervisor配置文件中加上配置内容，指定连接地址端口（1）等信息，来管理项目。
+[program:aptm-test]
+command=/var/www/aptm-test/aptm/env/bin/gunicorn aptm.wsgi --chdir /var/www/aptm-test/aptm -b 127.0.0.1:5000 --timeout 120 -w 4
+user=www-data
+autostart=true
+autorestart=true
+worker_class=gevent
+redirect_stderr=true
+
 
 项目目录：
 /var/www
@@ -49,5 +57,142 @@ nginx
 	if (这里可以使用正则匹配来做条件)==，!=,~*,!~*
 	proxy_pass 这里写supervisor配置文件中定义的地址和端口（1）nginx listen 的端口是另一个。这里只是代理。
 }
+ server {
+        listen       5050;
+        #listen [::]:80 ipv6only=on;
+        server_name  10.7.1.34:5050;
+        client_max_body_size  100m;
+
+        location / {      
+
+           # root   html;
+           # index  index.html index.htm;
+           proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+           proxy_set_header Host $http_host;
+           proxy_redirect off;
+           proxy_read_timeout 120;
+           proxy_send_timeout 1200;
+           proxy_pass http://127.0.0.1:5000;
+        }
+
+
+	location = /acc/cuslog/{
+  	   limit_conn TotalConnLimitZone_ip 100;
+           limit_req zone=ConnLimitZone_ip nodelay;
+	   proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+           proxy_set_header Host $http_host;
+           proxy_redirect off;
+           proxy_read_timeout 120;
+           proxy_send_timeout 1200;
+           proxy_pass http://127.0.0.1:5000;
+	}
+
+
+	location = /app/eventinfo/{
+  	   limit_conn TotalConnLimitZone_ip 100;
+           limit_req zone=ConnLimitZone_ip burst=10 nodelay;
+
+	   proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+           proxy_set_header Host $http_host;
+           proxy_redirect off;
+           proxy_read_timeout 120;
+           proxy_send_timeout 1200;
+           proxy_pass http://127.0.0.1:5000;
+	}
+	#页面跳转
+	location ^~ /static/m/views/ {
+	if ($cookie_sessionid !~* [0-9a-z]+)
+	{
+	    rewrite .* /static/m/views/login.html redirect;
+	}
+	   limit_conn TotalConnLimitZone_sess 20;
+	   limit_req zone=ConnLimitZone_sess nodelay;
+           proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+           proxy_set_header Host $http_host;
+           proxy_redirect off;
+           proxy_read_timeout 120;
+           proxy_send_timeout 1200;
+           proxy_pass http://127.0.0.1:5000; 
+	}
+
+	location = /static/m/views/login.html {
+	   limit_conn TotalConnLimitZone_ip 15;
+           limit_req zone=ConnLimitZone_ip burst=10 nodelay;
+	 #   缓存设置
+           proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+           proxy_set_header Host $http_host;
+           proxy_redirect off;
+           proxy_read_timeout 120;
+           proxy_send_timeout 1200;
+           proxy_pass http://127.0.0.1:5000;
+	}
+	
+	location  /app/ {
+#       访问接口时判断是否登录
+              if ($cookie_sessionid !~* [0-9a-z]+) {
+#              #       rewrite ^(.*)$  http://127.0.0.1:5000/static/m/views/login.html redirect;
+                      return 302;
+              }
+           limit_conn TotalConnLimitZone_sess 20;
+           limit_req zone=ConnLimitZone_sess nodelay;
+       
+
+           # 缓存设置
+           proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+           proxy_set_header Host $http_host;
+           proxy_redirect off;
+           proxy_read_timeout 120;
+           proxy_send_timeout 1200;
+           proxy_pass http://127.0.0.1:5000;
+	}
+
+        location ~* /app/(detail/houses|unit|houselist)/ {
+           # 缓存设置
+           proxy_cache cache;
+           proxy_cache_valid 200 3s;
+           proxy_ignore_headers X-Accel-Expires Expires Cache-Control Set-Cookie;
+           proxy_cache_methods GET;
+           proxy_cache_lock on;
+
+           proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+           proxy_set_header Host $http_host;
+           proxy_redirect off;
+           proxy_read_timeout 120;
+           proxy_send_timeout 1200;
+           proxy_pass http://127.0.0.1:5000;
+        }
+
+        location ~* /app/houseinfo/ {
+           # 缓存设置
+           proxy_cache cache;
+           proxy_cache_valid 200 1s;
+           proxy_ignore_headers X-Accel-Expires Expires Cache-Control Set-Cookie;
+           proxy_cache_methods GET;
+           proxy_cache_lock on;
+
+           proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+           proxy_set_header Host $http_host;
+           proxy_redirect off;
+           proxy_read_timeout 120;
+           proxy_send_timeout 1200;
+           proxy_pass http://127.0.0.1:5000;
+        }
+
+
+        location /media/ {
+            root /var/www/aptm-test/aptm/;
+        }
+
+        location /static/ {
+           alias /var/www/aptm-test/aptm/public/;
+        }
+        error_page   500 502 503 504  /50x.html;
+
+        location = /50x.html {
+            root   html;
+        }
+
+	}
+
 
 开放端口iptables -I INPUT -p tct --dport 开放的端口号 -j ACCEPT
