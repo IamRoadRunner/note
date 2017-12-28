@@ -15,23 +15,24 @@ linux
 	source ./bin/activate
 	退出使用deactivate
 
-部署说明
-服务器地址：10.7.1.34
-用户名：root
-密码：onest,123
+克隆项目，切换分支，在虚拟环境中pip install -i requirement.txt安装模块。
+supervisor配置文件中加上配置内容，指定连接地址端口（1）等信息，来管理项目。
 
 项目目录：
 /var/www
 
 部署步骤：
-source aptm-env/bin/activate
+source aptm-env/bin/activate指定源进入虚拟环境。
 cd aptm
+
 supervisorctl
-> stop aptm (ctrl+c)
+> stop aptm (ctrl+c) 根据配置来启动项目。
+
 git pull origin develop
 (密码：jac75lin)
 ./manage.py collectstatic
 ./manage.py migrate(如果需要)
+
 supervisorctl
 > start aptm
 
@@ -46,4 +47,7 @@ nginx
 	使用limit_req_zone,limit_conn_zone限制连接数，并发数
 	$args,$remote_addr,
 	if (这里可以使用正则匹配来做条件)==，!=,~*,!~*
+	proxy_pass 这里写supervisor配置文件中定义的地址和端口（1）nginx listen 的端口是另一个。这里只是代理。
 }
+
+开放端口iptables -I INPUT -p tct --dport 开放的端口号 -j ACCEPT
