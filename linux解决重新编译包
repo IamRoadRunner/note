@@ -16,4 +16,7 @@
 
 sudo dpkg -i name.deb
 sudo apt-get install -f
+sudo add-apt-repository 源,新增源.
+sudo apt-get update
+
 
