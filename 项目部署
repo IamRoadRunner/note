@@ -7,7 +7,7 @@
 windows
 	virtualenv envname
 	cd envname
-	Script \activate
+	Script\activate
 
 linux
 	virtualenv envname
@@ -193,6 +193,23 @@ nginx
         }
 
 	}
+
+
+
+
+
+#         limit_req zone=ConnLimitZone_token burst=5 nodelay;
+#          rewrite_by_lua '
+#          local random = ngx.var.cookie_random
+#          if (random == nil) then
+#              random = math.random(999999)
+#          end 
+#                   
+#          local token = ngx.md5(ngx.var.remote_addr..random)
+#           if (ngx.var.cookie_token ~= token) then
+#               ngx.header["Set-Cookie"] = {"token="..token,"random="..random}
+#          end 
+#        ';
 
 
 开放端口iptables -I INPUT -p tct --dport 开放的端口号 -j ACCEPT

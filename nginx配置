@@ -1,0 +1,167 @@
+ limit_req_zone $cookie_sessionid zone=ConnLimitZone_sess:10m rate=10r/m;
+ limit_req_zone $cookie_token zone=ConnLimitZone_token:10m rate=1r/m;
+
+    server {
+        listen       5050;
+        #listen [::]:80 ipv6only=on;
+        server_name  10.7.1.34:5050;
+        client_max_body_size  100m;
+
+        location / {      
+
+           # root   html;
+           # index  index.html index.htm;
+           proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+           proxy_set_header Host $http_host;
+           proxy_redirect off;
+           proxy_read_timeout 120;
+           proxy_send_timeout 1200;
+           proxy_pass http://127.0.0.1:5000;
+        }
+
+	#页面跳转
+	location ^~ /static/m/views/ {
+	   if ($cookie_sessionid !~* [0-9a-z]+)
+	   {
+	       rewrite .* /static/m/views/login.html redirect;
+	   }  
+#	   limit_conn TotalConnLimitZone_sess 20;
+#	   limit_req zone=ConnLimitZone_sess burst=5 nodelay;
+           proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+           proxy_set_header Host $http_host;
+           proxy_redirect off;
+           proxy_read_timeout 120;
+           proxy_send_timeout 1200;
+           proxy_pass http://127.0.0.1:5000; 
+	}
+
+	location = /static/m/views/login.html {
+#	   limit_conn TotalConnLimitZone_ip 15;
+#          limit_req zone=ConnLimitZone_ip burst=10 nodelay;
+	 #   缓存设置
+           proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+           proxy_set_header Host $http_host;
+           proxy_redirect off;
+           proxy_read_timeout 120;
+           proxy_send_timeout 1200;
+           proxy_pass http://127.0.0.1:5000;
+	}
+
+	location = /app/eventinfo/ {
+	 rewrite_by_lua '
+		 local random = ngx.var.cookie_random
+		 if (random == nil) then
+			random = math.random(99999)
+		 end
+		 local token = ngx.md5("ident" .. ngx.var.remote_addr .. random)
+		 if (ngx.var.cookie_token ~= token) then
+			 ngx.header["Set-Cookie"] = {"token=" .. token..";Path=/acc/cuslog/;","random=" .. random..";Path=/acc/cuslog/;"} 
+		 end
+	 '; 
+           proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+           proxy_set_header Host $http_host;
+           proxy_redirect off;
+           proxy_read_timeout 120;
+           proxy_send_timeout 1200;
+           proxy_pass http://127.0.0.1:5000;
+	}
+
+       location =  /acc/cuslog/ {
+	   if ($cookie_token !~* [0-9a-z]+) {
+                      return 405;
+              }
+	   if ($cookie_random !~* [0-9]+) {
+                      return 405;
+              }
+
+	   rewrite_by_lua '
+		local random = ngx.var.cookie_random
+		local token = ngx.md5("ident" .. ngx.var.remote_addr .. random)
+		if(ngx.var.cookie_token ~= token) then
+		  return ngx.exit(405)
+		end
+           ';   	
+	   limit_req zone=ConnLimitZone_token burst=5 nodelay;
+           proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+           proxy_set_header Host $http_host;
+           proxy_redirect off;
+           proxy_read_timeout 120;
+           proxy_send_timeout 1200;
+           proxy_pass http://127.0.0.1:5000;
+}	
+
+
+	location =  /app/orderconfirm/ {
+#       访问接口时判断是否登录
+           if ($cookie_sessionid !~* [0-9a-z]+) {
+                      return 405;
+              }
+           limit_req zone=ConnLimitZone_sess burst=5 nodelay;
+           # 缓存设置
+           proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+           proxy_set_header Host $http_host;
+           proxy_redirect off;
+           proxy_read_timeout 120;
+           proxy_send_timeout 1200;
+           proxy_pass http://127.0.0.1:5000;
+	}
+
+
+	location  /app/ {
+           # 缓存设置
+           proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+           proxy_set_header Host $http_host;
+           proxy_redirect off;
+           proxy_read_timeout 120;
+           proxy_send_timeout 1200;
+           proxy_pass http://127.0.0.1:5000;
+	}
+
+        location ~* /app/(detail/houses|unit|houselist)/ {
+           # 缓存设置
+           proxy_cache cache;
+           proxy_cache_valid 200 3s;
+           proxy_ignore_headers X-Accel-Expires Expires Cache-Control Set-Cookie;
+           proxy_cache_methods GET;
+           proxy_cache_lock on;
+
+           proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+           proxy_set_header Host $http_host;
+           proxy_redirect off;
+           proxy_read_timeout 120;
+           proxy_send_timeout 1200;
+           proxy_pass http://127.0.0.1:5000;
+        }
+
+        location ~* /app/houseinfo/ {
+           # 缓存设置
+           proxy_cache cache;
+           proxy_cache_valid 200 1s;
+           proxy_ignore_headers X-Accel-Expires Expires Cache-Control Set-Cookie;
+           proxy_cache_methods GET;
+           proxy_cache_lock on;
+
+           proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+           proxy_set_header Host $http_host;
+           proxy_redirect off;
+           proxy_read_timeout 120;
+           proxy_send_timeout 1200;
+           proxy_pass http://127.0.0.1:5000;
+        }
+
+
+        location /media/ {
+            root /var/www/aptm/;
+        }
+
+        location /static/ {
+           alias /var/www/aptm-test/aptm/public/;
+        }
+        error_page   500 502 503 504  /50x.html;
+
+        location = /50x.html {
+            root   html;
+        }
+
+	}
+
