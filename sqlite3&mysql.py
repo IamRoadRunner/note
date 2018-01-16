@@ -72,3 +72,15 @@ cur.execute('select id,b(arg) form tb_name')
 con.commit()!!!!!!!!!!!!!!!!!!!!!!!
 
 
+sql语句
+select distinct columnname from tablename where 
+and/or order by xx desc/asc. 
+
+insert into tablename values ()
+insert into tablename(columnname) values ()
+
+update tablename set a=x where xxx
+
+delete from talbename where xxx删除一行
+delete from tablename 删除表中的所有行
+或delete * from tablename
