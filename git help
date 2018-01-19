@@ -46,7 +46,14 @@ num 3
 git stash 存储修改
 git stash list 查看存储的修改列表
 git stash apply 添加存储的状态
+git stash show stash@{#}查看不同
+git stash drop stash@{#}删除一个
 
 git config user.email 查看邮箱
 git config --global user.email xxx 修改邮箱
+
+上推分支
+git push origin name(新建的分支)
+删除分支
+git push origin :name(要删除的分支名)
 
