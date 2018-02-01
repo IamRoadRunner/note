@@ -1,0 +1,72 @@
+#特性
+class Powers:
+    def __init__(self, square, cube):
+        self._square = square
+        self._cube = cube
+    def getSquare(self):
+        return self._square **2
+    def setSquare(self, value):
+        self._square = value
+    square = property(getSquare, setSquare)
+
+#描述符
+class DescState:
+    def __int__(self, value):
+        self.value = value
+    def __get__(self, instance, owner):
+        print('DescState get')
+        return self.value * 10#描述符类实例
+    def __set__(self, instance, value):
+        print('DescState set')
+        self.value = value
+
+class InstState:
+    def __get__(self, instance, owner):
+        print('InstState get')
+        return instance._Y * 100#客户类实例
+    def __set__(self, instance, value):
+        print('InstState set')
+        instance._Y = value
+
+class CalcAttrs:
+    X = DescState(2)
+    Y = InstState()
+    def __init__(self):
+        self._Y = 3
+        self.z = 4
+#property 内置函数是创建描述符的一种方便方式
+#__getattr__，针对未定义的属性运行，属性没有存储在实例上，也没有从类继承。2.6/3.0+
+#__getattribute__，针对每个属性，避免属性访问的时候导致递归循环。2.6新式类/3.0+
+#他们可以拦截对任何实例属性的获取，不拦截属性赋值，要拦截赋值需要编写__setattr__
+
+#属性操作符重载
+class Catcher:
+    def __getattr__(self, name):  # 获取未定义的属性obj.name
+        print('Get:', name)
+
+    def __getattribute__(self, name):  # 对于所有的属性获取obj.name
+        pass
+    def __setattr__(self, name, value):
+        print('xx:', name, value)
+#self是主体实例对象，name是将要访问的属性的字符串名，value是要赋给该属性的对象。
+X=CalcAttrs()
+#X.job 会返回Get:job
+#X.pay = 99 会返回xx:pay 99
+
+class Wrapper:
+    def __int__(self, object):
+        self.wrapper = object
+    def __getattr__(self, name):
+        return getattr(self.wrapper,name)
+#跟踪了传递给包装类的另一个对象的每一次属性获取
+
+#避免循环
+def __getattribute__(self, name):
+    x = object.__getattribute__(self, 'other')
+def __setattr__(self, name, value):
+    self.__dict__['other'] = value
+    #object.__setattr__(self, 'other', value)
+
+#__getattr__和__getattribute__比较
+#__str__打印,__add__‘+’,__getitem__索引
+
