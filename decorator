@@ -1,0 +1,70 @@
+#函数装饰器 函数定义的时候名称重绑定
+def decorator(F):
+    return F
+@decorator
+def func():# func = decorator(func)
+    pass
+---------------------------------------------------
+#对简单函数装饰有效，对类方法函数不一定有效，使用嵌套的形式。
+class decorator:
+    def __init__(self, func):
+        self.func = func
+    def __call__(self, *args, **kwargs):
+        #self.func(*args)
+        pass
+
+@decorator
+def func(x, y):#func = decorator(func)，会产生一个装饰器类的实例
+    pass       #func is passed to __init__
+
+
+func(1, 2)#1,3传给了__call__的参数接收
+----------------------------------------------------
+def decorator(F):
+    def wrapper(*args):
+        pass
+    return wrapper
+
+@decorator
+def func(x, y):
+    pass
+
+class C:
+    @decorator
+    def method(self, x, y):
+        pass
+
+# 类装饰器，不是拦截而是返回一个可调用对象，调用创建实例的时候才运行。
+def decorator(cls):#每次调用都创建一个新的
+    class Wrapper:
+        def __init__(self, *args):
+            self.wrapped = cls(*args)
+        def __call__(self, *args):
+            self.wrapped = self.C(*args)
+            return self
+        def __getattr__(self, item):
+            return getattr(self.wrapped, item)
+
+@decorator
+class C:# C = decorator(C)
+    pass
+
+def decorator(cls):#支持多个包装的实例
+    class Wrapper:
+        def __init__(self, *args):
+            self.wrapped = cls(*args)
+    return Wrapper
+
+
+
+
+
+
+
+
+
+
+
+
+
+
