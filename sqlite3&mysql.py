@@ -177,6 +177,10 @@ foreign key约束
 	primary key(id_o),
 	foreign key(id_p) references person(id_p)
 	)
+	外键要求：
+	order中id_p不能是主键；
+	person种的id_p须是主键；
+	两个字段数据类型需要是相同的。
 
 	alter table tbname add foreign key(id_p) references person(id_p)
 	alter table tbname add constraint uc_p foreign key(id_p) references person(id_p)
