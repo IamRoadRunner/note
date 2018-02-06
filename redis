@@ -77,6 +77,70 @@ redis-cli 启动-h host -p port -a password
 service redis start/restart
 
 
+配置参数
+#include /path/to/local.conf 导入配置文件
+daemonize yes/no 是否作为守护进程 /var/run/redis.pid
+pidfile /var/run/redis.pid 指定pid存储位置
+port ###默认6379，如果设置为0，将不在socket上监听。
+tcp-backlog # tcp监听的最大容量数，当并发量大并且速度慢的时候，调高
+bind 绑定redis所在的服务器网卡ip
+timeout # 客户端和redis服务端的链接超时时间0表示永不超时
+tcp-keepalive 
+loglevel /debug/verbose/notice/warning 日志级别
+logfile '//'默认打印在终端窗口上
+syslog-enabled no 把日志记录到系统日志就改为yes
+syslog-ident redis设置syslog的identity
+database 16 数据库数默认16个默认使用0
+save 300 10 300秒内最少有10个key被改动，触发保存操作。
+rdbcompression yes 在进行备份时是否进行压缩
+rdbchecksum yes 读取和写入的时候是否支持crc64校验
+dbfilename dump.rdb备份文件名
+dir /path// 备份文件存放路径
+slaveof <masterip> <masterport> 本机为从服务区时，设置主服务器ip和端口
+masterauth <master-password> 本机为从服务器时，设置访问master服务器的密码
+slave-read-only yes是否允许slave服务器节点只提供读服务
+repl-ping-slave-period #slave在预定义时间间隔内发送ping到server
+repl-timeout #^设置主从复制过期时间
+repl-backlog-size 1mb 越大slave可以断开链接的时间越长
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

@@ -35,5 +35,5 @@ wang all=(root) all
 
 
 tar -vzcf 压缩
-    -vzxf 解压
+    -vxcf 解压
 chmod chgrp +s +t/
