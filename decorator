@@ -1,3 +1,19 @@
+class A(object):
+    def foo(self, x):#常规的方法
+        print("executing foo(%s,%s)" % (self, x))
+        print('self:', self)
+    @classmethod#类方法
+    def class_foo(cls, x):
+        print("executing class_foo(%s,%s)" % (cls, x))
+        print('cls:', cls)
+    @staticmethod#静态方法
+    def static_foo(x):
+        print("executing static_foo(%s)" % x)    
+a = A()
+a.foo()
+A.class_foo()
+a/A.static_foo()
+
 #函数装饰器 函数定义的时候名称重绑定
 def decorator(F):
     return F
@@ -54,6 +70,81 @@ def decorator(cls):#支持多个包装的实例
         def __init__(self, *args):
             self.wrapped = cls(*args)
     return Wrapper
+
+#跟踪调用
+应用与类方法的时候self是装饰器的一个实例
+class tracer:
+	def __init__(self, func):
+		self.call = 0
+		self.func = func#使用类实例属性保存状态
+	def __call__(self, *args)：
+		self.call  += 1
+		self.func(*args，**kargs)
+
+#状态信息保持选项
+类实例属性
+封闭作用域和全局作用域
+calls = 0
+def tracer(func):
+	def wrapper(*args, **kwargs):
+		global calls
+		calls +=1
+		return func(*args, **kwargs)
+	return wrapper
+封闭作用域和nonlocal
+def tracer(func):
+	calls = 0
+	def wrapper(*args, **kwargs):
+		nonlocal calls
+		calls +=1
+		return func(*args, **kwargs)
+	return wrapper
+函数属性
+def tracer(func):
+	def wrapper(*args, **kwargs):
+		wrapper.calls+=1
+		calls +=1
+		return func(*args, **kwargs)
+	wrapper.calls = 0
+	return wrapper
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
