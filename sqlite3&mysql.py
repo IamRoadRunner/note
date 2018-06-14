@@ -105,7 +105,7 @@ in操作符
 select * from tablename where com in ('x','y')
 
 between操作符
-取数据范围只内的
+取数据范围之内的
 where com between 'a' and 'b'
           not between 
 
@@ -177,9 +177,17 @@ foreign key约束
 	primary key(id_o),
 	foreign key(id_p) references person(id_p)
 	)
+	create table order(
+		id int not null,
+		name varchar(255),
+		p_id int not null,
+		primary key(id),
+		foreign key(p_id) references person(id_p)
+		)
+
 	外键要求：
 	order中id_p不能是主键；
-	person种的id_p须是主键；
+	person中的id_p须是主键；
 	两个字段数据类型需要是相同的。
 
 	alter table tbname add foreign key(id_p) references person(id_p)
@@ -279,7 +287,8 @@ scalar函数(标量函数)
 	now()返回时间
 	format(column, format),format(now(),'yyyy-mm-dd')
 
-
+grant all privileges on *.* to root@...  identified by '1' with grant option;
+flush privileges;
 
 
 
