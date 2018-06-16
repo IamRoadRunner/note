@@ -2,9 +2,6 @@ import base64
 import qrcode
 
 def url2qrcode(data):
-    '''
-    二维码
-    '''
     qr = qrcode.QRCode(
         version=1,
         error_correction=qrcode.constants.ERROR_CORRECT_L,

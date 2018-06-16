@@ -217,7 +217,7 @@ create table person(
 
 default 约束
 插入默认值
-alter table tbname alter city set defautl 'xx'
+alter table tbname alter city set default'xx'
 	           alter column city set default 'xx'
 
 		   alter city drop default/alter column city drop default 
@@ -238,7 +238,7 @@ drop 语句
 alter table在已有的表中添加，修改或删除列
 	alter table tbname add column_name type ;
 	alter table tbname drop column_name;
-	alter table tbname alter column_name type;
+	alter table tbname change column oldcolumn_name  newcolumn_name type;
 auto increment在新纪录插入表中时生成一个唯一的数字
 create table person(
 	id_p int not null auto_increment/identity(20起,10步长),#起始值是1，递增1
