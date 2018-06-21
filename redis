@@ -34,13 +34,13 @@ redis-cli 启动-h host -p port -a password
 4.列表
 	l..r
 	lpush/rpush key value1 value2
-	blpop/brpop key timeout过期时间
-	lpop/rpop key 
+	blpop/brpop key timeout过期时间 lpush先进去的在右边
+	lpop/rpop key 删掉元素
 	brpoplpush source destination timeout
 	rpoplpush source destination
 	lrange key start stop
 	lrem key count(几个) value)移除列表元素
-	lset key index value
+	lset key index value 对值进行修改
 	ltrim key start stop 修剪
 	llen key 列表长度
 5.集合
@@ -52,8 +52,22 @@ redis-cli 启动-h host -p port -a password
 	smove source destination member
 	sdiff key1 key2
 	sdiffstore key1 key2
-	sinter/sinterstore
+	sinter/sinterstore new_key key1 key2
 	sunion/sunionstore
+有序集合
+    zadd key score1 mumber1 score2 mumber2 添加有序集合元素，带分数的
+    zcard key 集合成员数
+    zcount key min max 获取指定区间成员数
+    zincrby key score value 指定的值score加
+    zinterstore new_key numbers key1 key2 交集存进new_key里
+    zrange key start stop 通过索引返回指定区间内的成员
+    zrangebyscore key start stop 通过分数返回指定区间内的成员
+    zrank key member 返回成员的索引
+    zrem key ... 移除
+    zremrangebyrank/zremrangebyscore key start/stop;min max 范围移除
+    zrevrange key start stop 通过索引分数高到低 /zrevrangebyscore key max min 分数高到低
+    zrevrank key member 返回成员排名
+
 6.事务
 	事务原子性，开始事务，命令入队，执行事务。
 	multi 开始一个事务
@@ -68,7 +82,7 @@ redis-cli 启动-h host -p port -a password
 	client list
 	client getname
 	config set parameter value 修改参数无需重启
-	dbsize 获取数据苦key的数量
+	dbsize 获取数据库key的数量
 	flushall
 	flushdb
 	config get dir redis安装目录
