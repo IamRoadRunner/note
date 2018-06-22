@@ -1,4 +1,6 @@
 redis-cli 启动-h host -p port -a password
+redis-cli shutdown 停止服务
+redis-server redis.conf 启动服务 这里要加载rdb文件需要在rdb文件所在目录启动redis --maxclients 10000最大连接数
 1.type key value
 	keys * (查看所有的key)
 	del key
@@ -51,7 +53,7 @@ redis-cli 启动-h host -p port -a password
 	srem key member1 member2删除成员
 	smove source destination member
 	sdiff key1 key2
-	sdiffstore key1 key2
+	sdiffstore new_key key1 key2
 	sinter/sinterstore new_key key1 key2
 	sunion/sunionstore
 有序集合
@@ -75,7 +77,22 @@ redis-cli 启动-h host -p port -a password
 	。
 	。
 	exec触发
-7.其他
+	discard 放弃执行十事务块内的所有命令
+	watch 监视一个或多个key，如果在事务执行之前这些key被改动，事务将被打断
+	unwatch 取消对所有key的监视
+7.持久化
+rdb 默认的 fork一个子进程来进行持久化，不会影响性能，但是会丢失一部分数据汇入，恢复比较快
+    save 900 1              #在900秒(15分钟)之后，如果至少有1个key发生变化，则dump内存快照。
+    save 300 10            #在300秒(5分钟)之后，如果至少有10个key发生变化，则dump内存快照。
+    save 60 10000        #在60秒(1分钟)之后，如果至少有10000个key发生变化，则dump内存快照。
+
+aof 记录对服务器的写操作，一直往后append，如果日志过大可以rewrite，消耗一部分性能，但是数据丢失比较少
+    appendfsync always     #每次有数据修改发生时都会写入AOF文件。
+    appendfsync everysec  #每秒钟同步一次，该策略为AOF的缺省策略。
+    appendfsync no          #从不同步。高效但是数据不会被持久化。
+
+8.其他
+    config set requirepass 'password' 登陆之后 auth 'password'认证
 	select index 切换数据库
 	服务器命令
 	client kill
@@ -85,10 +102,11 @@ redis-cli 启动-h host -p port -a password
 	dbsize 获取数据库key的数量
 	flushall
 	flushdb
-	config get dir redis安装目录
-	save生成dump.rdb 文件
+	config get dir   redis安装目录
+	save生成dump.rdb 文件，用于备份恢复数据
+	bgsave 后台进行备份
 
-service redis start/restart
+
 
 
 配置参数
