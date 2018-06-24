@@ -102,6 +102,20 @@ def mid(tree):
         mid(tree.right)
 
 
+def mid2(tree):
+    re = []
+    stack = []
+    while tree or stack:
+        while tree:
+            stack.append(tree)
+            tree = tree.left
+        if stack:
+            t = stack.pop()
+            re.append(t.data)
+            tree = t.right
+    return re
+
+
 def pre(tree):
     print(tree.data)
     if tree.left:
@@ -110,12 +124,40 @@ def pre(tree):
         pre(tree.right)
 
 
+def pre2(tree):
+    re = []
+    stack = [tree]
+    while stack:
+        node = stack.pop()
+        re.append(node.data)
+        if node.right:
+            stack.append(node.right)
+        if node.left:
+            stack.append(node.left)
+    return re
+
+
+def pre3(tree):
+    re = []
+    stack = []
+    while tree or stack:
+        while tree:
+            re.append(tree.data)
+            stack.append(tree)
+            tree = tree.left
+        if stack:
+            t = stack.pop()
+            tree = t.right
+    return re
+
+
 def aft(tree):
     if tree.left:
         aft(tree.left)
     if tree.right:
         aft(tree.right)
     print(tree.data)
+
 
 
 def max_deep(tree):
@@ -146,7 +188,4 @@ def rev(link):
         cur = tmp
     return pre
 
-root = rev(link)
-while root:
-    print(root.data)
-    root = root.next
+
