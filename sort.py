@@ -159,33 +159,48 @@ def aft(tree):
     print(tree.data)
 
 
-
 def max_deep(tree):
     if not tree:
         return 0
     return max(max_deep(tree.left), max_deep(tree.right)) + 1
 
 
+def check(s):
+    singled = {'}': '{', ']': '[', ')': '('}
+    left = '{[('
+    right = '}])'
+    arr = []
+    for c in s:
+        if c in left:
+            arr.append(c)
+        elif c in right:
+            if arr and arr[-1] == singled[c]:
+                arr.pop()
+            else:
+                return False
+    return True
+
+# print(check("{{{[}}}"))
+
+
 # print(lookup(tree))
 
 
-#link
-class Node(object):
-    def __init__(self, data=None, next=None):
-        self.data = data
-        self.next = next
+# link
+# class Node(object):
+#     def __init__(self, data=None, next=None):
+#         self.data = data
+#         self.next = next
 
-link = Node(1, Node(2, Node(3, Node(4, Node(5, Node(6, Node(7, Node(8, Node(9)))))))))
+# link = Node(1, Node(2, Node(3, Node(4, Node(5, Node(6, Node(7, Node(8, Node(9)))))))))
 
-def rev(link):
-    pre = link
-    cur = link.next
-    pre.next = None
-    while cur:
-        tmp = cur.next
-        cur.next = pre
-        pre = cur
-        cur = tmp
-    return pre
-
-
+# def rev(link):
+#     pre = link
+#     cur = link.next
+#     pre.next = None
+#     while cur:
+#         tmp = cur.next
+#         cur.next = pre
+#         pre = cur
+#         cur = tmp
+#     return pre
